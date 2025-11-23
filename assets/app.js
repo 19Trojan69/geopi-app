@@ -5,9 +5,9 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
     // ============================
     // KONFIGURATION
     // ============================
-    const MAPTILER_KEY = "DEIN_MAPTILER_KEY_HIER"; // TODO: ersetzen
-    const SUPABASE_URL = "https://DEINPROJECT.supabase.co"; // TODO
-    const SUPABASE_ANON_KEY = "DEIN_SUPABASE_ANON_KEY"; // TODO
+    const MAPTILER_KEY = "CreAh02QGNcepAT2Zcfm"; // TODO: ersetzen
+    const SUPABASE_URL = "https://mubfgqihjdczrsadrhhz.supabase.co"; // TODO
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11YmZncmloamRjenJzYWRyaGh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE3NjI0MDksImV4cCI6MjA0NzMzODQwOX0.KwGieF0kP0xXo7frx1yX9oJXWvLaGybhoVN-d4G8Sho"; // TODO
     const TABLE_NAME = "places";
 
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
