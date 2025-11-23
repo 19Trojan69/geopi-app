@@ -22,18 +22,19 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 const map = new maplibregl.Map({
   container: "map",
-  style: `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}`,
-  center: [14.2858, 48.3069], // Linz als Start
-  zoom: 11,
-  renderWorldCopies: false, // Welt nicht 3x nebeneinander
+  // Sicherer Test-Style, der immer funktioniert
+  style: "https://demotiles.maplibre.org/style.json",
+  center: [14.2858, 48.3069],
+  zoom: 3,
+  renderWorldCopies: false,
   attributionControl: true,
 });
 
-// Welt-Grenzen setzen, damit man nicht ins Nichts scrollt
 map.setMaxBounds([
   [-180, -85],
   [180, 85],
 ]);
+
 
 map.addControl(
   new maplibregl.NavigationControl({ visualizePitch: true }),
