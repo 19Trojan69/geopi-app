@@ -17,7 +17,7 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 // ============================
 const map = new maplibregl.Map({
   container: "map",
-  style: `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}`,
+  style: "https://demotiles.maplibre.org/style.json",
   center: [14.2858, 48.3069],
   zoom: 11,
   renderWorldCopies: false, // Welt nicht mehrfach kacheln
