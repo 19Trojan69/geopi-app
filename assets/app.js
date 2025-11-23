@@ -20,8 +20,15 @@ const map = new maplibregl.Map({
   style: `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}`,
   center: [14.2858, 48.3069],
   zoom: 11,
+  renderWorldCopies: false, // Welt nicht mehrfach kacheln
   attributionControl: true,
 });
+
+// Welt auf sinnvolle Bounds begrenzen (kein endloses Scrollen)
+map.setMaxBounds([
+  [-180, -85],
+  [180, 85],
+]);
 
 map.addControl(
   new maplibregl.NavigationControl({ visualizePitch: true }),
@@ -269,4 +276,3 @@ if (testpayBtn) {
     );
   });
 }
-
