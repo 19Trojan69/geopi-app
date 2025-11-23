@@ -2,7 +2,10 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
   <title>GeoPi – Unified Test v1.0.1</title>
 
   <!-- MapLibre & MapTiler -->
@@ -13,7 +16,7 @@
   <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
 
   <!-- GeoPi Styles -->
-  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="./assets/style.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -28,7 +31,9 @@
               GeoPi
               <span class="warning">⚠️</span>
             </div>
-            <div class="version-label">Unified Test Version <strong>v1.0.1</strong></div>
+            <div class="version-label">
+              Unified Test Version <strong>v1.0.1</strong>
+            </div>
           </div>
         </div>
         <div class="header-actions">
@@ -76,14 +81,21 @@
           <div class="sheet-handle"></div>
           <div class="sheet-title">Location eintragen</div>
           <div class="sheet-sub">
-            Dein aktueller Standort wird automatisch verwendet. Bitte ergänze die wichtigsten Infos zur Location.
+            Dein aktueller Standort wird automatisch verwendet. Bitte ergänze die
+            wichtigsten Infos zur Location.
           </div>
 
           <form id="location-form">
             <div class="form-grid">
               <div>
                 <label for="name">Name der Location*</label>
-                <input id="name" name="name" type="text" placeholder="z.B. Pi Café Linz" required />
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="z.B. Pi Café Linz"
+                  required
+                />
               </div>
               <div>
                 <label for="category">Kategorie*</label>
@@ -98,11 +110,21 @@
               </div>
               <div>
                 <label for="city">Stadt / Ort</label>
-                <input id="city" name="city" type="text" placeholder="Linz" />
+                <input
+                  id="city"
+                  name="city"
+                  type="text"
+                  placeholder="Linz"
+                />
               </div>
               <div>
                 <label for="country">Land</label>
-                <input id="country" name="country" type="text" placeholder="Österreich" />
+                <input
+                  id="country"
+                  name="country"
+                  type="text"
+                  placeholder="Österreich"
+                />
               </div>
               <div class="form-grid-full">
                 <label for="description">Kurzbeschreibung</label>
@@ -126,7 +148,11 @@
               <button type="button" class="sheet-close-btn" id="close-sheet">
                 Abbrechen
               </button>
-              <button type="submit" class="sheet-submit-btn" id="submit-location">
+              <button
+                type="submit"
+                class="sheet-submit-btn"
+                id="submit-location"
+              >
                 <span>Speichern</span>
                 <span>➜</span>
               </button>
@@ -137,9 +163,16 @@
     </main>
 
     <div class="footer-line">
-      GeoPi – <span>Global Utility Map (Testnet)</span> · Domain: geopi.app · Hosting: Cloudflare Pages · Supabase · MapLibre
+      GeoPi – <span>Global Utility Map (Testnet)</span> · Domain: geopi.app ·
+      Hosting: Cloudflare Pages · Supabase · MapLibre
     </div>
   </div>
+
+  <!-- GeoPi App Logic -->
+  <script type="module" src="./assets/app.js"></script>
+</body>
+</html>
+
 
   <!-- GeoPi App Logic -->
   <script type="module" src="/assets/app.js"></script>
