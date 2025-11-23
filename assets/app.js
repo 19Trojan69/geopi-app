@@ -1,25 +1,32 @@
-// Supabase-Client **einmalig** importieren
+// ======================================
+// Supabase-Client laden
+// ======================================
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-// ============================
+// ======================================
 // KONFIGURATION
-// ============================
-const MAPTILER_KEY = "CreAh02QGNcepAT2Zcfm"; // TODO: ersetzen
-const SUPABASE_URL = "https://mubfgqihjdczrsadrhhz.supabase.co"; // TODO
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11YmZncWloamRjenJzYWRyaGh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDczMTAsImV4cCI6MjA3ODc4MzMxMH0.0i2S0o4rOB4I2Np-tPnvMjYfIsB_CZZdZ5w_I83UAk4"; // TODO
+// ======================================
+const MAPTILER_KEY = "CreAh02QGNcepAT2Zcfm"; // optional, aktuell nicht aktiv
+const SUPABASE_URL = "https://mubfgqihjdczrsadrhhz.supabase.co";
+const SUPABASE_ANON_KEY = "HIER_DEIN_NEUER_ANON_KEY"; // <-- Bitte ersetzen!
 const TABLE_NAME = "places";
 
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-// ============================
+// ======================================
 // MAP INITIALISIEREN
-// ============================
+// ======================================
+
+// 💡 Für Stabilität: erst Demo-Style → später MapTiler aktivieren
 const map = new maplibregl.Map({
   container: "map",
-  // Erstmal ein öffentlicher Demo-Style, um zu testen,
-  // ob MapLibre + Layout funktionieren:
+
+  // Sicher funktionierender Demo-Style
   style: "https://demotiles.maplibre.org/style.json",
+
+  // Später kannst du wieder aktivieren:
+  // style: `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}`,
+
   center: [14.2858, 48.3069],
   zoom: 3,
   renderWorldCopies: false,
@@ -31,18 +38,14 @@ map.setMaxBounds([
   [180, 85],
 ]);
 
-
-// Welt auf sinnvolle Bounds begrenzen (kein endloses Scrollen)
-map.setMaxBounds([
-  [-180, -85],
-  [180, 85],
-]);
-
 map.addControl(
   new maplibregl.NavigationControl({ visualizePitch: true }),
   "top-right"
 );
 
+// ======================================
+// ELEMENTE
+// ======================================
 const statusText = document.getElementById("status-text");
 const coordLatEl = document.getElementById("coord-lat");
 const coordLngEl = document.getElementById("coord-lng");
@@ -53,12 +56,6 @@ function setStatus(text) {
   if (statusText) statusText.textContent = text;
 }
 
-function createCurrentLocationMarker(lng, lat) {
-  const el = document.createElement("div");
-  el.className = "current-location-marker";
-  new maplibregl.Marker(el).setLngLat([lng, lat]).addTo(map);
-}
-
 function updateCoordPills(lat, lng) {
   if (coordLatEl) coordLatEl.textContent = `Lat: ${lat.toFixed(5)}`;
   if (coordLngEl) coordLngEl.textContent = `Lng: ${lng.toFixed(5)}`;
@@ -66,7 +63,15 @@ function updateCoordPills(lat, lng) {
   if (hiddenLng) hiddenLng.value = String(lng);
 }
 
-// Geolocation
+function createCurrentLocationMarker(lng, lat) {
+  const el = document.createElement("div");
+  el.className = "current-location-marker";
+  new maplibregl.Marker(el).setLngLat([lng, lat]).addTo(map);
+}
+
+// ======================================
+// GEOLOCATION
+// ======================================
 if ("geolocation" in navigator) {
   navigator.geolocation.getCurrentPosition(
     (pos) => {
@@ -75,15 +80,11 @@ if ("geolocation" in navigator) {
       map.setZoom(13);
       createCurrentLocationMarker(longitude, latitude);
       updateCoordPills(latitude, longitude);
-      setStatus(
-        "GeoPi Karte geladen – aktueller Standort erkannt und im Formular vorbelegt."
-      );
+      setStatus("GeoPi Karte geladen – Standort erkannt.");
     },
     (err) => {
       console.warn("Geolocation Error", err);
-      setStatus(
-        "GeoPi Karte geladen – Standort konnte nicht automatisch ermittelt werden."
-      );
+      setStatus("Standort konnte nicht automatisch ermittelt werden.");
     },
     {
       enableHighAccuracy: true,
@@ -92,93 +93,53 @@ if ("geolocation" in navigator) {
     }
   );
 } else {
-  setStatus(
-    "GeoPi Karte geladen – Geolocation wird von diesem Gerät nicht unterstützt."
-  );
+  setStatus("Geolocation wird nicht unterstützt.");
 }
 
-// ============================
-// SUPABASE
-// ============================
+// ======================================
+// SUPABASE CLIENT
+// ======================================
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-async function loadPlaces() {
-  try {
-    const { data, error } = await supabase
-      .from(TABLE_NAME)
-      .select("*")
-      .limit(500);
-
-    if (error) throw error;
-    if (!data) return;
-
-    data.forEach((place) => {
-      if (place.longitude && place.latitude) {
-        createPiMarker(place);
-      }
-    });
-  } catch (err) {
-    console.error("Fehler beim Laden der Locations:", err);
-    setStatus("Locations konnten nicht geladen werden (Supabase-Fehler).");
-  }
-}
-
-function openRoute(lat, lng) {
-  const latLng = `${lat},${lng}`;
-  let url;
-  if (isIOS) {
-    url = `https://maps.apple.com/?daddr=${encodeURIComponent(
-      latLng
-    )}&dirflg=d`;
-  } else {
-    url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-      latLng
-    )}`;
-  }
-  window.open(url, "_blank");
-}
-
+// ======================================
+// MARKER RENDERN
+// ======================================
 function createPiMarker(place) {
   const el = document.createElement("div");
   el.className = "pi-marker";
-
-  const name = place.name || "GeoPi Location";
-  const city = place.city || "";
-  const category = place.category || "";
-  const desc = place.description || "";
 
   const popupDiv = document.createElement("div");
   popupDiv.className = "geopi-popup";
 
   const titleEl = document.createElement("h3");
-  titleEl.textContent = name;
+  titleEl.textContent = place.name || "GeoPi Location";
   popupDiv.appendChild(titleEl);
 
-  if (city) {
-    const cityP = document.createElement("p");
-    cityP.textContent = city;
-    popupDiv.appendChild(cityP);
+  if (place.city) {
+    const p = document.createElement("p");
+    p.textContent = place.city;
+    popupDiv.appendChild(p);
   }
 
-  if (category) {
-    const catP = document.createElement("p");
-    catP.textContent = `Kategorie: ${category}`;
-    popupDiv.appendChild(catP);
+  if (place.category) {
+    const p = document.createElement("p");
+    p.textContent = `Kategorie: ${place.category}`;
+    popupDiv.appendChild(p);
   }
 
-  if (desc) {
-    const descP = document.createElement("p");
-    descP.textContent = desc;
-    popupDiv.appendChild(descP);
+  if (place.description) {
+    const p = document.createElement("p");
+    p.textContent = place.description;
+    popupDiv.appendChild(p);
   }
 
   const routeBtn = document.createElement("button");
   routeBtn.type = "button";
   routeBtn.className = "route-btn";
-  routeBtn.innerHTML = '<span>🧭</span><span>Route anzeigen</span>';
-  routeBtn.addEventListener("click", () => {
-    openRoute(place.latitude, place.longitude);
-  });
+  routeBtn.innerHTML = "🧭 Route anzeigen";
+  routeBtn.addEventListener("click", () =>
+    openRoute(place.latitude, place.longitude)
+  );
   popupDiv.appendChild(routeBtn);
 
   const popup = new maplibregl.Popup({ offset: 24 }).setDOMContent(popupDiv);
@@ -189,11 +150,49 @@ function createPiMarker(place) {
     .addTo(map);
 }
 
+// ======================================
+// ROUTING
+// ======================================
+function openRoute(lat, lng) {
+  const latLng = `${lat},${lng}`;
+  let url;
+
+  if (isIOS) {
+    url = `https://maps.apple.com/?daddr=${encodeURIComponent(latLng)}`;
+  } else {
+    url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(latLng)}`;
+  }
+
+  window.open(url, "_blank");
+}
+
+// ======================================
+// LOCATIONS LADEN
+// ======================================
+async function loadPlaces() {
+  try {
+    const { data, error } = await supabase
+      .from(TABLE_NAME)
+      .select("*")
+      .limit(500);
+
+    if (error) throw error;
+    if (!data) return;
+
+    data.forEach((p) => {
+      if (p.latitude && p.longitude) createPiMarker(p);
+    });
+  } catch (err) {
+    console.error("Fehler beim Laden:", err);
+    setStatus("Locations konnten nicht geladen werden.");
+  }
+}
+
 loadPlaces();
 
-// ============================
+// ======================================
 // REGISTRIER-SHEET
-// ============================
+// ======================================
 const sheetBackdrop = document.getElementById("sheet-backdrop");
 const openRegisterBtn = document.getElementById("open-register");
 const closeSheetBtn = document.getElementById("close-sheet");
@@ -201,24 +200,19 @@ const locationForm = document.getElementById("location-form");
 const submitBtn = document.getElementById("submit-location");
 
 function openSheet() {
-  if (sheetBackdrop) sheetBackdrop.style.display = "flex";
+  sheetBackdrop.style.display = "flex";
 }
 
 function closeSheet() {
-  if (sheetBackdrop) sheetBackdrop.style.display = "none";
+  sheetBackdrop.style.display = "none";
 }
 
-if (openRegisterBtn) {
-  openRegisterBtn.addEventListener("click", openSheet);
-}
-if (closeSheetBtn) {
-  closeSheetBtn.addEventListener("click", closeSheet);
-}
+if (openRegisterBtn) openRegisterBtn.addEventListener("click", openSheet);
+if (closeSheetBtn) closeSheetBtn.addEventListener("click", closeSheet);
+
 if (sheetBackdrop) {
   sheetBackdrop.addEventListener("click", (e) => {
-    if (e.target === sheetBackdrop) {
-      closeSheet();
-    }
+    if (e.target === sheetBackdrop) closeSheet();
   });
 }
 
@@ -228,20 +222,19 @@ if (locationForm) {
     if (!submitBtn) return;
 
     const formData = new FormData(locationForm);
+
     const payload = {
       name: formData.get("name")?.toString() || null,
       category: formData.get("category")?.toString() || null,
       city: formData.get("city")?.toString() || null,
       country: formData.get("country")?.toString() || null,
       description: formData.get("description")?.toString() || null,
-      latitude:
-        hiddenLat && hiddenLat.value ? Number(hiddenLat.value) : null,
-      longitude:
-        hiddenLng && hiddenLng.value ? Number(hiddenLng.value) : null,
+      latitude: hiddenLat ? Number(hiddenLat.value) : null,
+      longitude: hiddenLng ? Number(hiddenLng.value) : null,
     };
 
     if (!payload.latitude || !payload.longitude) {
-      alert("Koordinaten fehlen. Bitte Standortfreigabe prüfen.");
+      alert("Koordinaten fehlen!");
       return;
     }
 
@@ -255,32 +248,26 @@ if (locationForm) {
         .single();
 
       if (error) throw error;
-      if (data) {
-        createPiMarker(data);
-        locationForm.reset();
-        updateCoordPills(payload.latitude, payload.longitude);
-        closeSheet();
-        setStatus(
-          "Location gespeichert. Marker mit Pi-Logo wurde hinzugefügt."
-        );
-      }
+
+      createPiMarker(data);
+      locationForm.reset();
+      closeSheet();
+      setStatus("Location gespeichert und Marker hinzugefügt!");
     } catch (err) {
-      console.error("Fehler beim Speichern der Location:", err);
-      alert("Speichern fehlgeschlagen. Bitte später erneut versuchen.");
+      console.error(err);
+      alert("Speichern fehlgeschlagen.");
     } finally {
       submitBtn.disabled = false;
     }
   });
 }
 
-// ============================
-// Testzahlung (Platzhalter)
-// ============================
+// ======================================
+// TESTZAHLUNG (Platzhalter)
+// ======================================
 const testpayBtn = document.getElementById("testpay-btn");
 if (testpayBtn) {
-  testpayBtn.addEventListener("click", () => {
-    alert(
-      "Testzahlung 0.01 Test-Pi – Pi SDK Integration folgt in einem späteren Build."
-    );
-  });
+  testpayBtn.addEventListener("click", () =>
+    alert("Testzahlung 0.01 Test-Pi — SDK folgt später.")
+  );
 }
