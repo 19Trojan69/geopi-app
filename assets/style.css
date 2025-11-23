@@ -18,38 +18,28 @@
       padding: 0;
     }
 
-    html,
-    body {
-      height: 100%;
-      width: 100%;
-      background: #000;
-      color: var(--geo-text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      overscroll-behavior: none;
-    }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      display: flex;
-      flex-direction: column;
-      background: radial-gradient(circle at top, #3a1270, #05030b 55%, #000 100%);
-    }
+/* Hülle für die ganze App */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-    .app-shell {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding-top: var(--safe-top);
-      padding-bottom: var(--safe-bottom);
-    }
+/* Der Map-Container MUSS eine Höhe haben */
+#map {
+  flex: 1;
+  width: 100%;
+  min-height: 400px;
+  background: #000; /* falls keine Tiles kommen, siehst du es trotzdem */
+}
 
-    header {
-      position: relative;
-      z-index: 10;
-      padding: 0.75rem 1rem 1rem;
-      background: linear-gradient(120deg, #320c67, #5e1fa1, #220642);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
-    }
 
     .header-top-row {
       display: flex;
