@@ -1,110 +1,493 @@
-/* ============= Reset & Basics ============= */
+:root {
+      --geo-purple: #5b1b9b;
+      --geo-purple-dark: #2a0b52;
+      --geo-gold: #ffb648;
+      --geo-bg: #05030b;
+      --geo-text: #f8f5ff;
+      --geo-muted: #c7bedf;
+      --header-height: 190px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Segoe UI", sans-serif;
-  background: #050014;
-  color: #f5f5ff;
-}
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      background: #000;
+      color: var(--geo-text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      overscroll-behavior: none;
+    }
 
-.app-shell {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+    body {
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at top, #3a1270, #05030b 55%, #000 100%);
+    }
 
-/* ============= Header ============= */
+    .app-shell {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
+    }
 
-.top-bar {
-  width: 100%;
-  padding: 0.6rem 1rem;
-  background: linear-gradient(90deg, #3b0c99, #8b1eff);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 0.75rem 1rem 1rem;
+      background: linear-gradient(120deg, #320c67, #5e1fa1, #220642);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    }
 
-.top-bar h1 {
-  margin: 0;
-  font-size: 0.95rem;
-}
+    .header-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
 
-.testpay-btn {
-  border-radius: 999px;
-  padding: 0.35rem 0.9rem;
-  font-size: 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(0, 0, 0, 0.25);
-  color: #fff5d1;
-  cursor: pointer;
-}
+    .app-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-/* ============= Hauptbereich + Karte ============= */
+    .app-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 20%, #ffdd9b, #d26b3c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 0 10px rgba(255, 182, 72, 0.7);
+    }
 
-.main {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  padding: 0.75rem;
-}
+    .app-icon span {
+      font-size: 1rem;
+    }
 
-/* GANZ wichtig: Map ist volle Breite und hat Höhe */
-#map {
-  flex: 1 1 auto;
-  width: 100%;
-  min-height: calc(100vh - 120px);
-  border-radius: 14px;
-  overflow: hidden;
-  background: #000;
-}
+    .app-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
 
-/* MapLibre Controls etwas nach innen */
-.maplibregl-ctrl-top-right {
-  top: 10px;
-  right: 10px;
-}
+    .app-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
 
-/* ============= Footer / Status ============= */
+    .app-name .warning {
+      font-size: 1rem;
+    }
 
-.app-footer {
-  padding: 0.4rem 0.9rem;
-  font-size: 0.75rem;
-  background: #050014;
-  color: #d9e2ff;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.75rem;
-  justify-content: space-between;
-}
+    .version-label {
+      font-size: 0.8rem;
+      color: var(--geo-muted);
+    }
 
-/* Marker (für später, Schaden tut's nicht) */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-.current-location-marker {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #00b4ff;
-  border: 3px solid #ffffff;
-  box-shadow: 0 0 0 4px rgba(0, 180, 255, 0.35);
-}
+    .testpay-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem; /* halb so hoch wie vorher */
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #2b0648;
+      background: radial-gradient(circle at 20% 0%, #ffe7b5, #ffb648);
+      box-shadow: 0 0 8px rgba(255, 182, 72, 0.9);
+      white-space: nowrap;
+    }
 
-.pi-marker {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #ffb000;
-  border: 3px solid #ffffff;
-  box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.35);
-}
+    .menu-button {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 0, 30, 0.6);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
 
+    .menu-button span {
+      width: 16px;
+      height: 2px;
+      background: #fff;
+      position: relative;
+    }
+
+    .menu-button span::before,
+    .menu-button span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 16px;
+      height: 2px;
+      background: #fff;
+    }
+
+    .menu-button span::before {
+      top: -5px;
+    }
+
+    .menu-button span::after {
+      top: 5px;
+    }
+
+    .header-subtitle {
+      font-size: 0.8rem;
+      color: var(--geo-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .header-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+    }
+
+    .badge {
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(8, 0, 22, 0.42);
+      color: var(--geo-muted);
+    }
+
+    .badge-variant {
+      border-color: rgba(255, 182, 72, 0.8);
+      color: #ffd27f;
+      background: radial-gradient(circle at 0% 0%, rgba(255, 182, 72, 0.35), rgba(14, 0, 40, 0.9));
+    }
+
+    main {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #map {
+      flex: 1;
+      min-height: 260px;
+    }
+
+    .maplibregl-canvas {
+      border-radius: 0;
+    }
+
+    /* current location marker (blue, wie Google Maps) */
+    .current-location-marker {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #2d8cff;
+      box-shadow: 0 0 0 4px rgba(45, 140, 255, 0.35);
+      border: 2px solid #fff;
+    }
+
+    /* Pi Location Marker (Coin Style) */
+    .pi-marker {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffe6b0, #f29b3b 45%, #9b3a26 90%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      position: relative;
+      border: 2px solid #fbe2ae;
+      font-weight: 700;
+      color: #6b1d18;
+      font-size: 1rem;
+    }
+
+    .pi-marker::after {
+      content: "π";
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* Popup Styling */
+    .geopi-popup {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      font-size: 0.8rem;
+      color: #f6f2ff;
+    }
+
+    .geopi-popup h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .geopi-popup p {
+      margin-bottom: 0.15rem;
+      color: #d3caec;
+    }
+
+    .geopi-popup .route-btn {
+      margin-top: 0.4rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: linear-gradient(120deg, #ffb648, #ffdd9b);
+      color: #2b0648;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .geopi-popup .route-btn span {
+      font-size: 0.9rem;
+    }
+
+    /* Bottom registration panel */
+    .bottom-panel {
+      position: relative;
+      z-index: 5;
+      background: linear-gradient(to top, #050309, rgba(6, 0, 20, 0.96));
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.75rem 0.85rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .register-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .register-text {
+      font-size: 0.8rem;
+      color: var(--geo-muted);
+    }
+
+    .register-text strong {
+      color: #fff;
+    }
+
+    .register-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: radial-gradient(circle at 10% 0%, #ffe7b5, #ffb648);
+      color: #2b0648;
+      white-space: nowrap;
+      box-shadow: 0 0 10px rgba(255, 182, 72, 0.7);
+    }
+
+    .status-line {
+      font-size: 0.72rem;
+      color: #9c8fbd;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 6px rgba(74, 222, 128, 0.8);
+    }
+
+    .chevron {
+      margin-left: auto;
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    /* Hidden registration sheet (simple) */
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 30;
+    }
+
+    .sheet {
+      width: 100%;
+      max-width: 520px;
+      background: #060013;
+      border-radius: 18px 18px 0 0;
+      padding: 0.9rem 1rem 1.1rem;
+      box-shadow: 0 -10px 26px rgba(0, 0, 0, 0.8);
+    }
+
+    .sheet-handle {
+      width: 44px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 0 auto 0.7rem;
+    }
+
+    .sheet-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .sheet-sub {
+      font-size: 0.75rem;
+      color: #a79acb;
+      margin-bottom: 0.7rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .form-grid-full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.7rem;
+      color: #cfc4f1;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(6, 0, 25, 0.9);
+      color: #f5f0ff;
+      font-size: 0.75rem;
+      padding: 0.4rem 0.65rem;
+      outline: none;
+    }
+
+    textarea {
+      border-radius: 10px;
+      min-height: 54px;
+      resize: vertical;
+      padding-top: 0.5rem;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #7f729f;
+    }
+
+    .coord-row {
+      display: flex;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      color: #a79acb;
+      margin-bottom: 0.5rem;
+    }
+
+    .coord-pill {
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(8, 0, 28, 0.8);
+    }
+
+    .sheet-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.3rem;
+    }
+
+    .sheet-close-btn {
+      border: none;
+      background: transparent;
+      color: #a79acb;
+      font-size: 0.8rem;
+    }
+
+    .sheet-submit-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: linear-gradient(130deg, #ffb648, #ffdd9b);
+      color: #2b0648;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 0 12px rgba(255, 182, 72, 0.85);
+    }
+
+    .sheet-submit-btn:disabled {
+      opacity: 0.6;
+      box-shadow: none;
+    }
+
+    .footer-line {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #7e719d;
+      padding: 0.3rem 0.6rem 0.45rem;
+      background: #05020b;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-line span {
+      color: #cfc4f1;
+    }
+
+    @media (min-width: 768px) {
+      header {
+        padding-inline: 1.5rem;
+      }
+      .bottom-panel {
+        padding-inline: 1.5rem;
+      }
+    }
