@@ -11,7 +11,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 // ============================
 const MAPTILER_KEY = "CreAh02QGNcepAT2Zcfm"; // dein MapTiler-Key
 const SUPABASE_URL = "https://mubfgqihjdczrsadrhhz.supabase.co";
-const SUPABASE_ANON_KEY = "DEIN_SUPABASE_ANON_KEY_HIER"; // <--- hier deinen echten Anon-Key einsetzen
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11YmZncWloamRjenJzYWRyaGh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDczMTAsImV4cCI6MjA3ODc4MzMxMH0.0i2S0o4rOB4I2Np-tPnvMjYfIsB_CZZdZ5w_I83UAk4"; // <--- hier deinen echten Anon-Key einsetzen
 const TABLE_NAME = "places";
 
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
