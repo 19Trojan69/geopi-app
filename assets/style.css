@@ -1,6 +1,4 @@
-/* ============================
-   Global Reset & Basics
-   ============================ */
+/* ============= Reset & Basics ============= */
 
 *,
 *::before,
@@ -15,23 +13,18 @@ body {
   height: 100%;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
+  background: #050014;
   color: #f5f5ff;
-  background: radial-gradient(circle at top, #4a1fff 0, #050014 55%, #010007 100%);
 }
 
-/* Gesamte App-Hülle */
 .app-shell {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* ============================
-   Top-Bar / Header
-   ============================ */
+/* ============= Header ============= */
 
-header,
-.app-header,
 .top-bar {
   width: 100%;
   padding: 0.6rem 1rem;
@@ -40,122 +33,62 @@ header,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
 }
 
-header h1,
-.app-header h1,
 .top-bar h1 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
-/* Badges / Chips */
-.badge,
-.chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem 0.75rem;
+.testpay-btn {
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Hamburger-Button generisch */
-button.menu-toggle,
-.menu-button,
-.hamburger {
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 999px;
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  color: #fff5d1;
   cursor: pointer;
-  color: #fff;
 }
 
-/* ============================
-   Hauptbereich + Map
-   ============================ */
+/* ============= Hauptbereich + Karte ============= */
 
-main,
-.main,
-.main-layout {
+.main {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   padding: 0.75rem;
-  gap: 0.75rem;
 }
 
-/* Der Map-Container MUSS eine reale Höhe haben */
+/* GANZ wichtig: Map ist volle Breite und hat Höhe */
 #map {
   flex: 1 1 auto;
   width: 100%;
-  min-height: 420px;
+  min-height: calc(100vh - 120px);
   border-radius: 14px;
   overflow: hidden;
-  background: #000; /* falls keine Tiles geladen werden */
+  background: #000;
 }
 
-/* MapLibre Navigation-Control etwas nach innen holen */
+/* MapLibre Controls etwas nach innen */
 .maplibregl-ctrl-top-right {
   top: 10px;
   right: 10px;
 }
 
-/* ============================
-   Statusleiste unten
-   ============================ */
+/* ============= Footer / Status ============= */
 
-.status-bar,
-footer,
 .app-footer {
-  width: 100%;
-  padding: 0.5rem 0.9rem;
+  padding: 0.4rem 0.9rem;
   font-size: 0.75rem;
-  background: rgba(2, 0, 20, 0.95);
+  background: #050014;
   color: #d9e2ff;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.75rem;
-  align-items: center;
+  gap: 0.35rem 0.75rem;
   justify-content: space-between;
 }
 
-.status-bar span,
-.app-footer span {
-  opacity: 0.9;
-}
-
-/* ============================
-   GeoPi – Status & Koordinaten
-   ============================ */
-
-#status-text {
-  font-size: 0.78rem;
-}
-
-.coord-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.15rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  background: rgba(40, 17, 115, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-}
-
-/* ============================
-   Marker-Styles (Pi + Current Location)
-   ============================ */
+/* Marker (für später, Schaden tut's nicht) */
 
 .current-location-marker {
   width: 20px;
@@ -170,191 +103,8 @@ footer,
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #ffb000; /* Pi-Gold */
+  background: #ffb000;
   border: 3px solid #ffffff;
   box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.35);
 }
 
-/* ============================
-   Popup-Content
-   ============================ */
-
-.geopi-popup {
-  max-width: 260px;
-  font-size: 0.8rem;
-  color: #111322;
-}
-
-.geopi-popup h3 {
-  margin: 0 0 0.25rem;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #111322;
-}
-
-.geopi-popup p {
-  margin: 0 0 0.15rem;
-  color: #34384a;
-}
-
-/* Route-Button im Popup */
-.route-btn {
-  margin-top: 0.3rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.7rem;
-  font-size: 0.78rem;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  background: #ffb000;
-  color: #151018;
-  font-weight: 600;
-}
-
-.route-btn span:first-child {
-  font-size: 0.9rem;
-}
-
-/* ============================
-   Registrier-Sheet (Bottom Sheet)
-   ============================ */
-
-#sheet-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: rgba(0, 0, 0, 0.6);
-  display: none; /* JS setzt auf flex */
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.sheet {
-  width: 100%;
-  max-width: 520px;
-  max-height: 80vh;
-  background: #08031a;
-  border-radius: 18px 18px 0 0;
-  padding: 1rem 1.2rem 1.4rem;
-  box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.45);
-  color: #f1f3ff;
-  overflow-y: auto;
-}
-
-.sheet h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
-}
-
-.sheet p {
-  margin: 0 0 0.6rem;
-  font-size: 0.82rem;
-  color: #c9d1ff;
-}
-
-/* Formular im Sheet */
-#location-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  margin-top: 0.4rem;
-}
-
-#location-form label {
-  font-size: 0.78rem;
-  color: #c7ceff;
-}
-
-#location-form input,
-#location-form select,
-#location-form textarea {
-  width: 100%;
-  border-radius: 10px;
-  border: 1px solid rgba(120, 133, 255, 0.6);
-  background: #050015;
-  color: #f5f6ff;
-  padding: 0.45rem 0.6rem;
-  font-size: 0.8rem;
-}
-
-#location-form textarea {
-  min-height: 70px;
-  resize: vertical;
-}
-
-/* Buttons */
-button,
-.btn {
-  border-radius: 999px;
-  border: none;
-  padding: 0.5rem 1.1rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-#submit-location {
-  margin-top: 0.4rem;
-  background: linear-gradient(135deg, #ffb000, #ff7b29);
-  color: #231016;
-}
-
-#submit-location:disabled {
-  filter: grayscale(0.5);
-  cursor: default;
-  opacity: 0.7;
-}
-
-#close-sheet {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f5f5ff;
-  margin-top: 0.3rem;
-}
-
-/* „Jetzt hinzufügen“-Button unten */
-#open-register,
-.call-to-action,
-.btn-primary {
-  background: linear-gradient(135deg, #ffb000, #ff7b29);
-  color: #231018;
-}
-
-/* ============================
-   Testzahlung-Button
-   ============================ */
-
-#testpay-btn {
-  border-radius: 999px;
-  padding: 0.35rem 0.9rem;
-  font-size: 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(0, 0, 0, 0.25);
-  color: #fff5d1;
-}
-
-/* ============================
-   Responsive
-   ============================ */
-
-@media (min-width: 900px) {
-  main,
-  .main,
-  .main-layout {
-    padding: 1rem 1.2rem;
-  }
-
-  #map {
-    min-height: 520px;
-  }
-
-  .sheet {
-    border-radius: 18px;
-    margin-bottom: 1.5rem;
-  }
-
-  #sheet-backdrop {
-    align-items: center;
-  }
-}
