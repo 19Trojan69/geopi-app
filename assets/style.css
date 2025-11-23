@@ -189,17 +189,16 @@
     }
 
     main {
-      position: relative;
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
+  display: block; /* statt flex */
+  position: relative;
+}
+
 
     #map {
-      flex: 1;
-      min-height: 260px;
-    }
+  width: 100%;
+  height: calc(100vh - 180px); /* passt zur Headerhöhe */
+}
+
 
     .maplibregl-canvas {
       border-radius: 0;
@@ -488,6 +487,7 @@
         padding-inline: 1.5rem;
       }
       .bottom-panel {
-        padding-inline: 1.5rem;
-      }
+  width: 100%;
+}
+
     }
