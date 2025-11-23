@@ -1,6 +1,5 @@
 // ===========================================
 // GeoPi – App-Logik (bereinigte Version)
-// Nur EIN Supabase-Import, kein Doppel-CreateClient
 // ===========================================
 
 // Supabase-Client EINMAL importieren
@@ -9,9 +8,10 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 // ============================
 // KONFIGURATION
 // ============================
-const MAPTILER_KEY = "CreAh02QGNcepAT2Zcfm"; // dein MapTiler-Key
+const MAPTILER_KEY = "CreAh02QGNcepAT2Zcfm";
 const SUPABASE_URL = "https://mubfgqihjdczrsadrhhz.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11YmZncWloamRjenJzYWRyaGh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDczMTAsImV4cCI6MjA3ODc4MzMxMH0.0i2S0o4rOB4I2Np-tPnvMjYfIsB_CZZdZ5w_I83UAk4"; // <--- hier deinen echten Anon-Key einsetzen
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11YmZncmloamRjenJzYWRyaGh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE3NjI0MDksImV4cCI6MjA0NzMzODQwOX0.KwGieF0kP0xXo7frx1yX9oJXWvLaGybhoVN-d4G8Sho";
 const TABLE_NAME = "places";
 
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -22,10 +22,9 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 const map = new maplibregl.Map({
   container: "map",
-  // Sicherer Test-Style, der immer funktioniert
-  style: "https://demotiles.maplibre.org/style.json",
+  style: `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}`,
   center: [14.2858, 48.3069],
-  zoom: 3,
+  zoom: 11,
   renderWorldCopies: false,
   attributionControl: true,
 });
@@ -34,7 +33,6 @@ map.setMaxBounds([
   [-180, -85],
   [180, 85],
 ]);
-
 
 map.addControl(
   new maplibregl.NavigationControl({ visualizePitch: true }),
@@ -63,7 +61,7 @@ function updateCoordPills(lat, lng) {
 }
 
 // ============================
-// AKTUELLEN STANDORT HOLEN
+// GEOLOCATION
 // ============================
 
 function createCurrentLocationMarker(lng, lat) {
