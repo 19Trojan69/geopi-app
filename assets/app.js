@@ -17,12 +17,20 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 // ============================
 const map = new maplibregl.Map({
   container: "map",
+  // Erstmal ein öffentlicher Demo-Style, um zu testen,
+  // ob MapLibre + Layout funktionieren:
   style: "https://demotiles.maplibre.org/style.json",
   center: [14.2858, 48.3069],
-  zoom: 11,
-  renderWorldCopies: false, // Welt nicht mehrfach kacheln
+  zoom: 3,
+  renderWorldCopies: false,
   attributionControl: true,
 });
+
+map.setMaxBounds([
+  [-180, -85],
+  [180, 85],
+]);
+
 
 // Welt auf sinnvolle Bounds begrenzen (kein endloses Scrollen)
 map.setMaxBounds([
