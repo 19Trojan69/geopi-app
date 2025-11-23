@@ -1,483 +1,360 @@
-:root {
-      --geo-purple: #5b1b9b;
-      --geo-purple-dark: #2a0b52;
-      --geo-gold: #ffb648;
-      --geo-bg: #05030b;
-      --geo-text: #f8f5ff;
-      --geo-muted: #c7bedf;
-      --header-height: 190px;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-    }
+/* ============================
+   Global Reset & Basics
+   ============================ */
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html,
 body {
-  height: 100%;
   margin: 0;
   padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  color: #f5f5ff;
+  background: radial-gradient(circle at top, #4a1fff 0, #050014 55%, #010007 100%);
 }
 
-/* Hülle für die ganze App */
+/* Gesamte App-Hülle */
 .app-shell {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
-/* Der Map-Container MUSS eine Höhe haben */
-#map {
-  flex: 1;
+/* ============================
+   Top-Bar / Header
+   ============================ */
+
+header,
+.app-header,
+.top-bar {
   width: 100%;
-  min-height: 400px;
-  background: #000; /* falls keine Tiles kommen, siehst du es trotzdem */
+  padding: 0.6rem 1rem;
+  background: linear-gradient(90deg, #3b0c99, #8b1eff);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
+header h1,
+.app-header h1,
+.top-bar h1 {
+  margin: 0;
+  font-size: 1rem;
+}
 
-    .header-top-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
+/* Badges / Chips */
+.badge,
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-    .app-title-wrap {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+/* Hamburger-Button generisch */
+button.menu-toggle,
+.menu-button,
+.hamburger {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+}
 
-    .app-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: radial-gradient(circle at 30% 20%, #ffdd9b, #d26b3c);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.9rem;
-      box-shadow: 0 0 10px rgba(255, 182, 72, 0.7);
-    }
+/* ============================
+   Hauptbereich + Map
+   ============================ */
 
-    .app-icon span {
-      font-size: 1rem;
-    }
+main,
+.main,
+.main-layout {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  gap: 0.75rem;
+}
 
-    .app-title-block {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-    }
+/* Der Map-Container MUSS eine reale Höhe haben */
+#map {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 420px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000; /* falls keine Tiles geladen werden */
+}
 
-    .app-name {
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
+/* MapLibre Navigation-Control etwas nach innen holen */
+.maplibregl-ctrl-top-right {
+  top: 10px;
+  right: 10px;
+}
 
-    .app-name .warning {
-      font-size: 1rem;
-    }
+/* ============================
+   Statusleiste unten
+   ============================ */
 
-    .version-label {
-      font-size: 0.8rem;
-      color: var(--geo-muted);
-    }
+.status-bar,
+footer,
+.app-footer {
+  width: 100%;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.75rem;
+  background: rgba(2, 0, 20, 0.95);
+  color: #d9e2ff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+.status-bar span,
+.app-footer span {
+  opacity: 0.9;
+}
 
-    .testpay-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 0.25rem 0.75rem; /* halb so hoch wie vorher */
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #2b0648;
-      background: radial-gradient(circle at 20% 0%, #ffe7b5, #ffb648);
-      box-shadow: 0 0 8px rgba(255, 182, 72, 0.9);
-      white-space: nowrap;
-    }
+/* ============================
+   GeoPi – Status & Koordinaten
+   ============================ */
 
-    .menu-button {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(10, 0, 30, 0.6);
-      backdrop-filter: blur(8px);
-      cursor: pointer;
-    }
+#status-text {
+  font-size: 0.78rem;
+}
 
-    .menu-button span {
-      width: 16px;
-      height: 2px;
-      background: #fff;
-      position: relative;
-    }
+.coord-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  background: rgba(40, 17, 115, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
 
-    .menu-button span::before,
-    .menu-button span::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 16px;
-      height: 2px;
-      background: #fff;
-    }
+/* ============================
+   Marker-Styles (Pi + Current Location)
+   ============================ */
 
-    .menu-button span::before {
-      top: -5px;
-    }
+.current-location-marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #00b4ff;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 4px rgba(0, 180, 255, 0.35);
+}
 
-    .menu-button span::after {
-      top: 5px;
-    }
+.pi-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffb000; /* Pi-Gold */
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.35);
+}
 
-    .header-subtitle {
-      font-size: 0.8rem;
-      color: var(--geo-muted);
-      margin-bottom: 0.35rem;
-    }
+/* ============================
+   Popup-Content
+   ============================ */
 
-    .header-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      font-size: 0.7rem;
-    }
+.geopi-popup {
+  max-width: 260px;
+  font-size: 0.8rem;
+  color: #111322;
+}
 
-    .badge {
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(8, 0, 22, 0.42);
-      color: var(--geo-muted);
-    }
+.geopi-popup h3 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111322;
+}
 
-    .badge-variant {
-      border-color: rgba(255, 182, 72, 0.8);
-      color: #ffd27f;
-      background: radial-gradient(circle at 0% 0%, rgba(255, 182, 72, 0.35), rgba(14, 0, 40, 0.9));
-    }
+.geopi-popup p {
+  margin: 0 0 0.15rem;
+  color: #34384a;
+}
 
-    main {
-      position: relative;
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
+/* Route-Button im Popup */
+.route-btn {
+  margin-top: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #ffb000;
+  color: #151018;
+  font-weight: 600;
+}
 
-    #map {
-      flex: 1;
-      min-height: 260px;
-    }
+.route-btn span:first-child {
+  font-size: 0.9rem;
+}
 
-    .maplibregl-canvas {
-      border-radius: 0;
-    }
+/* ============================
+   Registrier-Sheet (Bottom Sheet)
+   ============================ */
 
-    /* current location marker (blue, wie Google Maps) */
-    .current-location-marker {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #2d8cff;
-      box-shadow: 0 0 0 4px rgba(45, 140, 255, 0.35);
-      border: 2px solid #fff;
-    }
+#sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.6);
+  display: none; /* JS setzt auf flex */
+  align-items: flex-end;
+  justify-content: center;
+}
 
-    /* Pi Location Marker (Coin Style) */
-    .pi-marker {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 20%, #ffe6b0, #f29b3b 45%, #9b3a26 90%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-      position: relative;
-      border: 2px solid #fbe2ae;
-      font-weight: 700;
-      color: #6b1d18;
-      font-size: 1rem;
-    }
+.sheet {
+  width: 100%;
+  max-width: 520px;
+  max-height: 80vh;
+  background: #08031a;
+  border-radius: 18px 18px 0 0;
+  padding: 1rem 1.2rem 1.4rem;
+  box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.45);
+  color: #f1f3ff;
+  overflow-y: auto;
+}
 
-    .pi-marker::after {
-      content: "π";
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
+.sheet h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
 
-    /* Popup Styling */
-    .geopi-popup {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      font-size: 0.8rem;
-      color: #f6f2ff;
-    }
+.sheet p {
+  margin: 0 0 0.6rem;
+  font-size: 0.82rem;
+  color: #c9d1ff;
+}
 
-    .geopi-popup h3 {
-      font-size: 0.95rem;
-      margin-bottom: 0.2rem;
-    }
+/* Formular im Sheet */
+#location-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.4rem;
+}
 
-    .geopi-popup p {
-      margin-bottom: 0.15rem;
-      color: #d3caec;
-    }
+#location-form label {
+  font-size: 0.78rem;
+  color: #c7ceff;
+}
 
-    .geopi-popup .route-btn {
-      margin-top: 0.4rem;
-      padding: 0.35rem 0.7rem;
-      border-radius: 999px;
-      border: none;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background: linear-gradient(120deg, #ffb648, #ffdd9b);
-      color: #2b0648;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
+#location-form input,
+#location-form select,
+#location-form textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(120, 133, 255, 0.6);
+  background: #050015;
+  color: #f5f6ff;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+}
 
-    .geopi-popup .route-btn span {
-      font-size: 0.9rem;
-    }
+#location-form textarea {
+  min-height: 70px;
+  resize: vertical;
+}
 
-    /* Bottom registration panel */
-    .bottom-panel {
-      position: relative;
-      z-index: 5;
-      background: linear-gradient(to top, #050309, rgba(6, 0, 20, 0.96));
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0.75rem 0.85rem 0.6rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
+/* Buttons */
+button,
+.btn {
+  border-radius: 999px;
+  border: none;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-    .register-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-    }
+#submit-location {
+  margin-top: 0.4rem;
+  background: linear-gradient(135deg, #ffb000, #ff7b29);
+  color: #231016;
+}
 
-    .register-text {
-      font-size: 0.8rem;
-      color: var(--geo-muted);
-    }
+#submit-location:disabled {
+  filter: grayscale(0.5);
+  cursor: default;
+  opacity: 0.7;
+}
 
-    .register-text strong {
-      color: #fff;
-    }
+#close-sheet {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f5ff;
+  margin-top: 0.3rem;
+}
 
-    .register-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 0.5rem 1rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      background: radial-gradient(circle at 10% 0%, #ffe7b5, #ffb648);
-      color: #2b0648;
-      white-space: nowrap;
-      box-shadow: 0 0 10px rgba(255, 182, 72, 0.7);
-    }
+/* „Jetzt hinzufügen“-Button unten */
+#open-register,
+.call-to-action,
+.btn-primary {
+  background: linear-gradient(135deg, #ffb000, #ff7b29);
+  color: #231018;
+}
 
-    .status-line {
-      font-size: 0.72rem;
-      color: #9c8fbd;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
+/* ============================
+   Testzahlung-Button
+   ============================ */
 
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 6px rgba(74, 222, 128, 0.8);
-    }
+#testpay-btn {
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff5d1;
+}
 
-    .chevron {
-      margin-left: auto;
-      font-size: 0.75rem;
-      opacity: 0.7;
-    }
+/* ============================
+   Responsive
+   ============================ */
 
-    /* Hidden registration sheet (simple) */
-    .sheet-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 30;
-    }
+@media (min-width: 900px) {
+  main,
+  .main,
+  .main-layout {
+    padding: 1rem 1.2rem;
+  }
 
-    .sheet {
-      width: 100%;
-      max-width: 520px;
-      background: #060013;
-      border-radius: 18px 18px 0 0;
-      padding: 0.9rem 1rem 1.1rem;
-      box-shadow: 0 -10px 26px rgba(0, 0, 0, 0.8);
-    }
+  #map {
+    min-height: 520px;
+  }
 
-    .sheet-handle {
-      width: 44px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.2);
-      margin: 0 auto 0.7rem;
-    }
+  .sheet {
+    border-radius: 18px;
+    margin-bottom: 1.5rem;
+  }
 
-    .sheet-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.35rem;
-    }
-
-    .sheet-sub {
-      font-size: 0.75rem;
-      color: #a79acb;
-      margin-bottom: 0.7rem;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.4rem 0.6rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .form-grid-full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      font-size: 0.7rem;
-      color: #cfc4f1;
-      display: block;
-      margin-bottom: 0.15rem;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(6, 0, 25, 0.9);
-      color: #f5f0ff;
-      font-size: 0.75rem;
-      padding: 0.4rem 0.65rem;
-      outline: none;
-    }
-
-    textarea {
-      border-radius: 10px;
-      min-height: 54px;
-      resize: vertical;
-      padding-top: 0.5rem;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #7f729f;
-    }
-
-    .coord-row {
-      display: flex;
-      gap: 0.4rem;
-      font-size: 0.7rem;
-      color: #a79acb;
-      margin-bottom: 0.5rem;
-    }
-
-    .coord-pill {
-      padding: 0.2rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(8, 0, 28, 0.8);
-    }
-
-    .sheet-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.3rem;
-    }
-
-    .sheet-close-btn {
-      border: none;
-      background: transparent;
-      color: #a79acb;
-      font-size: 0.8rem;
-    }
-
-    .sheet-submit-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 0.5rem 1.2rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      background: linear-gradient(130deg, #ffb648, #ffdd9b);
-      color: #2b0648;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      box-shadow: 0 0 12px rgba(255, 182, 72, 0.85);
-    }
-
-    .sheet-submit-btn:disabled {
-      opacity: 0.6;
-      box-shadow: none;
-    }
-
-    .footer-line {
-      font-size: 0.7rem;
-      text-align: center;
-      color: #7e719d;
-      padding: 0.3rem 0.6rem 0.45rem;
-      background: #05020b;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .footer-line span {
-      color: #cfc4f1;
-    }
-
-    @media (min-width: 768px) {
-      header {
-        padding-inline: 1.5rem;
-      }
-      .bottom-panel {
-        padding-inline: 1.5rem;
-      }
-    }
+  #sheet-backdrop {
+    align-items: center;
+  }
+}
