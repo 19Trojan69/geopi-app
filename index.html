@@ -1,180 +1,207 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-  <title>GeoPi – Unified Test v1.0.1</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>GeoPi – Unified Test v1.0.1</title>
 
-  <!-- MapLibre & MapTiler -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css"
-  />
-  <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+    <!-- MapLibre -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css"
+    />
+    <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
 
-  <!-- GeoPi Styles -->
-  <link rel="stylesheet" href="./assets/style.css" />
-</head>
-<body>
-  <div class="app-shell">
-    <header>
-      <div class="header-top-row">
-        <div class="app-title-wrap">
-          <div class="app-icon">
-            <span>Geo</span>
-          </div>
-          <div class="app-title-block">
-            <div class="app-name">
-              GeoPi
-              <span class="warning">⚠️</span>
+    <!-- GeoPi Styles -->
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <!-- HEADER -->
+      <header class="top-bar">
+        <div class="header-top-row">
+          <div class="app-title-wrap">
+            <div class="app-icon">
+              <span>Geo</span>
             </div>
-            <div class="version-label">
-              Unified Test Version <strong>v1.0.1</strong>
+            <div class="app-title-block">
+              <div class="app-name">
+                GeoPi
+                <span class="warning">⚠️</span>
+              </div>
+              <div class="version-label">
+                Unified Test Version <strong>v1.0.1</strong>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="header-actions">
-          <button class="testpay-btn" type="button" id="testpay-btn">
-            Testzahlung&nbsp;0.01&nbsp;Test-Pi
-          </button>
-          <button class="menu-button" type="button" aria-label="Menü">
-            <span></span>
-          </button>
-        </div>
-      </div>
-      <div class="header-subtitle">
-        Global Utility Map · Testnet Preview
-      </div>
-      <div class="header-badges">
-        <span class="badge badge-variant">Testnet · keine Fiat-Spekulation</span>
-        <span class="badge">Kategorie: Alle Kategorien</span>
-      </div>
-    </header>
 
-    <main>
-      <div id="map"></div>
-
-      <section class="bottom-panel">
-        <div class="register-header">
-          <div class="register-text">
-            <strong>Neue Location registrieren</strong><br />
-            Händler, Dienstleister oder Veranstalter können sich hier eintragen.
+          <div class="header-actions">
+            <button
+              class="testpay-btn"
+              type="button"
+              id="testpay-btn"
+              aria-label="Testzahlung 0.01 Test-Pi"
+            >
+              Testzahlung&nbsp;0.01&nbsp;Test-Pi
+            </button>
+            <button
+              class="menu-button"
+              type="button"
+              aria-label="Menü öffnen"
+            >
+              <span></span>
+            </button>
           </div>
-          <button class="register-btn" id="open-register">
-            Jetzt hinzufügen
-          </button>
         </div>
-        <div class="status-line">
-          <span class="status-dot"></span>
-          <span id="status-text">
-            GeoPi Karte geladen – aktueller Standort wird ermittelt …
+
+        <div class="header-subtitle">
+          Global Utility Map · Testnet Preview
+        </div>
+
+        <div class="header-badges">
+          <span class="badge badge-variant">
+            Testnet · keine Fiat-Spekulation
           </span>
-          <span class="chevron">▾</span>
+          <span class="badge">Kategorie: Alle Kategorien</span>
         </div>
-      </section>
+      </header>
 
-      <div class="sheet-backdrop" id="sheet-backdrop">
-        <div class="sheet">
-          <div class="sheet-handle"></div>
-          <div class="sheet-title">Location eintragen</div>
-          <div class="sheet-sub">
-            Dein aktueller Standort wird automatisch verwendet. Bitte ergänze die
-            wichtigsten Infos zur Location.
+      <!-- MAIN -->
+      <main class="main">
+        <!-- Karte -->
+        <div id="map"></div>
+
+        <!-- Unterer Panelbereich -->
+        <section class="bottom-panel">
+          <div class="register-header">
+            <div class="register-text">
+              <strong>Neue Location registrieren</strong><br />
+              Händler, Dienstleister oder Veranstalter können sich hier
+              eintragen.
+            </div>
+            <button class="register-btn" id="open-register" type="button">
+              Jetzt hinzufügen
+            </button>
           </div>
 
-          <form id="location-form">
-            <div class="form-grid">
-              <div>
-                <label for="name">Name der Location*</label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="z.B. Pi Café Linz"
-                  required
-                />
-              </div>
-              <div>
-                <label for="category">Kategorie*</label>
-                <select id="category" name="category" required>
-                  <option value="">Bitte wählen …</option>
-                  <option value="Haendler">Händler</option>
-                  <option value="Dienstleister">Dienstleister</option>
-                  <option value="Event">Event</option>
-                  <option value="ATM">ATM</option>
-                  <option value="Sonstiges">Sonstiges</option>
-                </select>
-              </div>
-              <div>
-                <label for="city">Stadt / Ort</label>
-                <input
-                  id="city"
-                  name="city"
-                  type="text"
-                  placeholder="Linz"
-                />
-              </div>
-              <div>
-                <label for="country">Land</label>
-                <input
-                  id="country"
-                  name="country"
-                  type="text"
-                  placeholder="Österreich"
-                />
-              </div>
-              <div class="form-grid-full">
-                <label for="description">Kurzbeschreibung</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  placeholder="Was bietet diese Location für Pioniere an?"
-                ></textarea>
-              </div>
+          <div class="status-line">
+            <span class="status-dot"></span>
+            <span id="status-text">
+              GeoPi Karte geladen – aktueller Standort wird ermittelt …
+            </span>
+            <span class="chevron">▾</span>
+          </div>
+        </section>
+
+        <!-- Bottom Sheet -->
+        <div class="sheet-backdrop" id="sheet-backdrop">
+          <div class="sheet" role="dialog" aria-modal="true">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">Location eintragen</div>
+            <div class="sheet-sub">
+              Dein aktueller Standort wird automatisch verwendet. Bitte ergänze
+              die wichtigsten Infos zur Location.
             </div>
 
-            <div class="coord-row" id="coord-row">
-              <div class="coord-pill" id="coord-lat">Lat: …</div>
-              <div class="coord-pill" id="coord-lng">Lng: …</div>
-            </div>
+            <form id="location-form">
+              <div class="form-grid">
+                <div>
+                  <label for="name">Name der Location*</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="z.B. Pi Café Linz"
+                    required
+                  />
+                </div>
 
-            <input type="hidden" id="latitude" name="latitude" />
-            <input type="hidden" id="longitude" name="longitude" />
+                <div>
+                  <label for="category">Kategorie*</label>
+                  <select id="category" name="category" required>
+                    <option value="">Bitte wählen …</option>
+                    <option value="Haendler">Händler</option>
+                    <option value="Dienstleister">Dienstleister</option>
+                    <option value="Event">Event</option>
+                    <option value="ATM">ATM</option>
+                    <option value="Sonstiges">Sonstiges</option>
+                  </select>
+                </div>
 
-            <div class="sheet-actions">
-              <button type="button" class="sheet-close-btn" id="close-sheet">
-                Abbrechen
-              </button>
-              <button
-                type="submit"
-                class="sheet-submit-btn"
-                id="submit-location"
-              >
-                <span>Speichern</span>
-                <span>➜</span>
-              </button>
-            </div>
-          </form>
+                <div>
+                  <label for="city">Stadt / Ort</label>
+                  <input
+                    id="city"
+                    name="city"
+                    type="text"
+                    placeholder="Linz"
+                  />
+                </div>
+
+                <div>
+                  <label for="country">Land</label>
+                  <input
+                    id="country"
+                    name="country"
+                    type="text"
+                    placeholder="Österreich"
+                  />
+                </div>
+
+                <div class="form-grid-full">
+                  <label for="description">Kurzbeschreibung</label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Was bietet diese Location für Pioniere an?"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="coord-row" id="coord-row">
+                <div class="coord-pill" id="coord-lat">Lat: …</div>
+                <div class="coord-pill" id="coord-lng">Lng: …</div>
+              </div>
+
+              <input type="hidden" id="latitude" name="latitude" />
+              <input type="hidden" id="longitude" name="longitude" />
+
+              <div class="sheet-actions">
+                <button
+                  type="button"
+                  class="sheet-close-btn"
+                  id="close-sheet"
+                >
+                  Abbrechen
+                </button>
+                <button
+                  type="submit"
+                  class="sheet-submit-btn"
+                  id="submit-location"
+                >
+                  <span>Speichern</span>
+                  <span>➜</span>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
 
-    <div class="footer-line">
-      GeoPi – <span>Global Utility Map (Testnet)</span> · Domain: geopi.app ·
-      Hosting: Cloudflare Pages · Supabase · MapLibre
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <span>
+          GeoPi – <strong>Global Utility Map (Testnet)</strong> · Domain:
+          geopi.app
+        </span>
+        <span>Hosting: Cloudflare Pages · Supabase · MapLibre</span>
+      </footer>
     </div>
-  </div>
 
-  <!-- GeoPi App Logic -->
-  <script type="module" src="./assets/app.js"></script>
-</body>
-</html>
-
-
-  <!-- GeoPi App Logic -->
-  <script type="module" src="/assets/app.js"></script>
-</body>
+    <!-- GeoPi App Logic -->
+    <script type="module" src="./assets/app.js"></script>
+  </body>
 </html>
