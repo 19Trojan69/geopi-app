@@ -282,14 +282,85 @@ if (locationForm) {
 }
 
 // ============================
-// TESTZAHLUNG (Platzhalter)
+// Pi SDK initialisieren
 // ============================
 
+function initPiSdk() {
+  if (!window.Pi) {
+    console.warn("Pi SDK nicht gefunden – bitte im Pi Browser öffnen.");
+    return;
+  }
+
+  try {
+    window.Pi.init({
+      version: "2.0",
+      sandbox: true, // GeoPi läuft im Testnet
+      onIncompletePaymentFound: (payment) => {
+        console.log("Unvollständige Zahlung gefunden:", payment);
+      },
+    });
+    console.log("Pi SDK initialisiert.");
+  } catch (err) {
+    console.error("Fehler bei Pi.init:", err);
+  }
+}
+
+// Beim Laden der Seite direkt initialisieren
+initPiSdk();
+
+// ============================
+// TESTZAHLUNG 0.01 Test-Pi
+// ============================
+
+async function handleGeoPiTestPayment() {
+  try {
+    if (!window.Pi) {
+      alert("Pi SDK nicht verfügbar. Bitte im Pi Browser öffnen.");
+      return;
+    }
+
+    const paymentData = {
+      amount: 0.01,
+      memo: "GeoPi Testzahlung 0.01 Test-Pi",
+      metadata: {
+        app: "GeoPi",
+        purpose: "test-payment",
+        version: "1.0.1",
+      },
+    };
+
+    const callbacks = {
+      onReadyForServerApproval: (paymentId) => {
+        console.log("onReadyForServerApproval:", paymentId);
+        // aktuell kein Backend – in der Sandbox reicht das Logging
+      },
+      onReadyForServerCompletion: (paymentId, txid) => {
+        console.log("onReadyForServerCompletion:", paymentId, txid);
+        alert("Testzahlung erfolgreich abgeschlossen 🎉");
+      },
+      onCancel: (paymentId) => {
+        console.log("Payment abgebrochen:", paymentId);
+        alert("Zahlung wurde abgebrochen.");
+      },
+      onError: (error, paymentId) => {
+        console.error("Pi Payment Error:", error, paymentId);
+        alert("Fehler beim Payment: " + (error?.message || error));
+      },
+    };
+
+    console.log("Starte GeoPi Testzahlung…", paymentData);
+
+    const payment = await window.Pi.createPayment(paymentData, callbacks);
+    console.log("Payment erzeugt:", payment);
+  } catch (err) {
+    console.error("Unerwarteter Fehler beim Payment:", err);
+    alert("Unerwarteter Fehler beim Payment.");
+  }
+}
+
+// Button mit Handler verbinden
 const testpayBtn = document.getElementById("testpay-btn");
 if (testpayBtn) {
-  testpayBtn.addEventListener("click", () => {
-    alert(
-      "Testzahlung 0.01 Test-Pi – Pi SDK Integration folgt in einem späteren Build."
-    );
-  });
+  testpayBtn.addEventListener("click", handleGeoPiTestPayment);
 }
+
